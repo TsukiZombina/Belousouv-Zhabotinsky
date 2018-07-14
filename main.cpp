@@ -18,6 +18,12 @@ GLuint createDisplayQuad(GLuint& vbo, GLuint& ebo) {
         0, 1, 2,
         1, 3, 2
     };
+
+    GLuint vao;
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+
+    
 }
 
 int main()
