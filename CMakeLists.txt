@@ -1,13 +1,20 @@
 cmake_minimum_required(VERSION 3.1)
+
 project(zhabotinsky) #Executable name
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11") #Banderas de compilación
 
-set(SOURCES main.cpp shader_util.h shader_util.cpp) #Banderas de compilación
+set(SOURCES
+    main.cpp
+    pingpong.h
+    pingpong.cpp
+    shader_util.h
+    shader_util.cpp)
 
 #Archivos que son parte de la configuración pero no de la compilación
 configure_file(vertex_shader.glsl vertex_shader.glsl COPYONLY) #Copiar con ese nombre al directorio del proyecto
 configure_file(fragment_shader.glsl fragment_shader.glsl COPYONLY)
+configure_file(test_shader.glsl test_shader.glsl COPYONLY)
 
 add_executable(${PROJECT_NAME} ${SOURCES}) #Produce un ejecutable de nombre PROJECT_NAME compuesto de SOURCES
 
