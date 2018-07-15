@@ -19,7 +19,7 @@ struct Neighbors
     int sum;
 };
 
-void getInfo(out Neighbors n)
+void getInfo(out Neighbors n, int q)
 {
     n.numActive = 0;
     n.numNonActive = 0;
@@ -28,7 +28,7 @@ void getInfo(out Neighbors n)
     int state = int(texture(sampler, TexCoord + vec2(-1, -1) / 512).r * 255);
     n.sum += state;
 
-    if(state == 200)
+    if(state == q)
     {
         n.numActive += 1;
     }
@@ -40,7 +40,7 @@ void getInfo(out Neighbors n)
     state = int(texture(sampler, TexCoord + vec2(-1, 0) / 512).r * 255);
     n.sum += state;
 
-    if(state == 200)
+    if(state == q)
     {
         n.numActive += 1;
     }
@@ -52,7 +52,7 @@ void getInfo(out Neighbors n)
     state = int(texture(sampler, TexCoord + vec2(-1, 1) / 512).r * 255);
     n.sum += state;
 
-    if(state == 200)
+    if(state == q)
     {
         n.numActive += 1;
     }
@@ -64,7 +64,7 @@ void getInfo(out Neighbors n)
     state = int(texture(sampler, TexCoord + vec2(0, -1) / 512).r * 255);
     n.sum += state;
 
-    if(state == 200)
+    if(state == q)
     {
         n.numActive += 1;
     }
@@ -76,7 +76,7 @@ void getInfo(out Neighbors n)
     state = int(texture(sampler, TexCoord + vec2(0, 1) / 512).r * 255);
     n.sum += state;
 
-    if(state == 200)
+    if(state == q)
     {
         n.numActive += 1;
     }
@@ -88,7 +88,7 @@ void getInfo(out Neighbors n)
     state = int(texture(sampler, TexCoord + vec2(1, -1) / 512).r * 255);
     n.sum += state;
 
-    if(state == 200)
+    if(state == q)
     {
         n.numActive += 1;
     }
@@ -100,7 +100,7 @@ void getInfo(out Neighbors n)
     state = int(texture(sampler, TexCoord + vec2(1, 0) / 512).r * 255);
     n.sum += state;
 
-    if(state == 200)
+    if(state == q)
     {
         n.numActive += 1;
     }
@@ -112,7 +112,7 @@ void getInfo(out Neighbors n)
     state = int(texture(sampler, TexCoord + vec2(1, 1) / 512).r * 255);
     n.sum += state;
 
-    if(state == 200)
+    if(state == q)
     {
         n.numActive += 1;
     }
@@ -124,15 +124,15 @@ void getInfo(out Neighbors n)
 
 void main()
 {
-    int q  = 200;
-    int g  = 28;
-    int k1 = 3;
+    int q  = 100;
+    int g  = 20;
+    int k1 = 2;
     int k2 = 3;
 
     int state = int(texture(sampler, TexCoord).r * 255);
 
     Neighbors n;
-    getInfo(n);
+    getInfo(n, q);
 
     if(state == 0)
     {
