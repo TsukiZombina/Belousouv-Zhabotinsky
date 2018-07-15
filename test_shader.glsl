@@ -12,38 +12,142 @@ out vec4 color;
 
 uniform sampler2D sampler;
 
-ivec4 get(int x, int y)
+struct Neighbors
 {
-    return ivec4(texture(sampler, TexCoord + vec2(x, y) / 512));
+    int numActive;
+    int numNonActive;
+    int sum;
+};
+
+void getInfo(out Neighbors n)
+{
+    n.numActive = 0;
+    n.numNonActive = 0;
+    n.sum = 0;
+
+    int state = int(texture(sampler, TexCoord + vec2(-1, -1) / 512).r * 255);
+    n.sum += state;
+
+    if(state == 200)
+    {
+        n.numActive += 1;
+    }
+    else if(state > 0)
+    {
+        n.numNonActive += 1;
+    }
+
+    state = int(texture(sampler, TexCoord + vec2(-1, 0) / 512).r * 255);
+    n.sum += state;
+
+    if(state == 200)
+    {
+        n.numActive += 1;
+    }
+    else if(state > 0)
+    {
+        n.numNonActive += 1;
+    }
+
+    state = int(texture(sampler, TexCoord + vec2(-1, 1) / 512).r * 255);
+    n.sum += state;
+
+    if(state == 200)
+    {
+        n.numActive += 1;
+    }
+    else if(state > 0)
+    {
+        n.numNonActive += 1;
+    }
+
+    state = int(texture(sampler, TexCoord + vec2(0, -1) / 512).r * 255);
+    n.sum += state;
+
+    if(state == 200)
+    {
+        n.numActive += 1;
+    }
+    else if(state > 0)
+    {
+        n.numNonActive += 1;
+    }
+
+    state = int(texture(sampler, TexCoord + vec2(0, 1) / 512).r * 255);
+    n.sum += state;
+
+    if(state == 200)
+    {
+        n.numActive += 1;
+    }
+    else if(state > 0)
+    {
+        n.numNonActive += 1;
+    }
+
+    state = int(texture(sampler, TexCoord + vec2(1, -1) / 512).r * 255);
+    n.sum += state;
+
+    if(state == 200)
+    {
+        n.numActive += 1;
+    }
+    else if(state > 0)
+    {
+        n.numNonActive += 1;
+    }
+
+    state = int(texture(sampler, TexCoord + vec2(1, 0) / 512).r * 255);
+    n.sum += state;
+
+    if(state == 200)
+    {
+        n.numActive += 1;
+    }
+    else if(state > 0)
+    {
+        n.numNonActive += 1;
+    }
+
+    state = int(texture(sampler, TexCoord + vec2(1, 1) / 512).r * 255);
+    n.sum += state;
+
+    if(state == 200)
+    {
+        n.numActive += 1;
+    }
+    else if(state > 0)
+    {
+        n.numNonActive += 1;
+    }
 }
 
 void main()
 {
-    ivec4 sum =
-        get(-1, -1) +
-        get(-1,  0) +
-        get(-1,  1) +
-        get( 0, -1) +
-        get( 0,  1) +
-        get( 1, -1) +
-        get( 1,  0) +
-        get( 1,  1);
+    int q  = 200;
+    int g  = 28;
+    int k1 = 3;
+    int k2 = 3;
 
-    ivec4 state = get(0, 0);
+    int state = int(texture(sampler, TexCoord).r * 255);
 
-    if(state.r == 1)
+    Neighbors n;
+    getInfo(n);
+
+    if(state == 0)
     {
-        color = vec4(0.0, 1.0, 0.0, 1.0);
+        float newState = (int(float(n.numActive) / k1) +
+            int(float(n.numNonActive) / k2)) / 255.0;
+
+        color = vec4(newState, 0.0, 0.0, 1.0);
     }
-    else if(state.g == 1)
+    else if(state < q)
     {
-        color = vec4(0.0, 0.0, 0.0, 1.0);
+        float newState = (int(float(n.sum) / (n.numActive + n.numNonActive + 1)) + g) / 255.0;
+
+        color = vec4(newState, 0.0, 0.0, 1.0);
     }
-    else if(state.r == 0 && state.g == 0 && sum.r == 2)
-    {
-        color = vec4(1.0, 0.0, 0.0, 1.0);
-    }
-    else
+    else if(state == q)
     {
         color = vec4(0.0, 0.0, 0.0, 1.0);
     }
