@@ -8,147 +8,147 @@
 
 in vec2 TexCoord;
 
-out vec4 color;
+out uvec4 color;
 
-uniform sampler2D sampler;
+uniform usampler2D sampler;
 
-struct Neighbors
+struct LocalInfo
 {
-    int numActive;
-    int numNonActive;
-    int sum;
+    uint numActive;
+    uint numInactive;
+    uint sum;
 };
 
-void getInfo(out Neighbors n, int q)
+void getLocalInfo(out LocalInfo info, uint q)
 {
-    n.numActive = 0;
-    n.numNonActive = 0;
-    n.sum = 0;
+    info.numActive = 0u;
+    info.numInactive = 0u;
+    info.sum = 0u;
 
-    int state = int(texture(sampler, TexCoord + vec2(-1, -1) / 512).r * 255);
-    n.sum += state;
-
-    if(state == q)
-    {
-        n.numActive += 1;
-    }
-    else if(state > 0)
-    {
-        n.numNonActive += 1;
-    }
-
-    state = int(texture(sampler, TexCoord + vec2(-1, 0) / 512).r * 255);
-    n.sum += state;
+    uint state = texture(sampler, TexCoord + vec2(-1, -1) / 512).r;
+    info.sum += state;
 
     if(state == q)
     {
-        n.numActive += 1;
+        info.numActive++;
     }
-    else if(state > 0)
+    else if(state > 0u)
     {
-        n.numNonActive += 1;
+        info.numInactive++;
     }
 
-    state = int(texture(sampler, TexCoord + vec2(-1, 1) / 512).r * 255);
-    n.sum += state;
-
-    if(state == q)
-    {
-        n.numActive += 1;
-    }
-    else if(state > 0)
-    {
-        n.numNonActive += 1;
-    }
-
-    state = int(texture(sampler, TexCoord + vec2(0, -1) / 512).r * 255);
-    n.sum += state;
+    state = texture(sampler, TexCoord + vec2(-1, 0) / 512).r;
+    info.sum += state;
 
     if(state == q)
     {
-        n.numActive += 1;
+        info.numActive++;
     }
-    else if(state > 0)
+    else if(state > 0u)
     {
-        n.numNonActive += 1;
+        info.numInactive++;
     }
 
-    state = int(texture(sampler, TexCoord + vec2(0, 1) / 512).r * 255);
-    n.sum += state;
-
-    if(state == q)
-    {
-        n.numActive += 1;
-    }
-    else if(state > 0)
-    {
-        n.numNonActive += 1;
-    }
-
-    state = int(texture(sampler, TexCoord + vec2(1, -1) / 512).r * 255);
-    n.sum += state;
+    state = texture(sampler, TexCoord + vec2(-1, 1) / 512).r;
+    info.sum += state;
 
     if(state == q)
     {
-        n.numActive += 1;
+        info.numActive++;
     }
-    else if(state > 0)
+    else if(state > 0u)
     {
-        n.numNonActive += 1;
+        info.numInactive++;
     }
 
-    state = int(texture(sampler, TexCoord + vec2(1, 0) / 512).r * 255);
-    n.sum += state;
-
-    if(state == q)
-    {
-        n.numActive += 1;
-    }
-    else if(state > 0)
-    {
-        n.numNonActive += 1;
-    }
-
-    state = int(texture(sampler, TexCoord + vec2(1, 1) / 512).r * 255);
-    n.sum += state;
+    state = texture(sampler, TexCoord + vec2(0, -1) / 512).r;
+    info.sum += state;
 
     if(state == q)
     {
-        n.numActive += 1;
+        info.numActive++;
     }
-    else if(state > 0)
+    else if(state > 0u)
     {
-        n.numNonActive += 1;
+        info.numInactive++;
+    }
+
+    state = texture(sampler, TexCoord + vec2(0, 1) / 512).r;
+    info.sum += state;
+
+    if(state == q)
+    {
+        info.numActive++;
+    }
+    else if(state > 0u)
+    {
+        info.numInactive++;
+    }
+
+    state = texture(sampler, TexCoord + vec2(1, -1) / 512).r;
+    info.sum += state;
+
+    if(state == q)
+    {
+        info.numActive++;
+    }
+    else if(state > 0u)
+    {
+        info.numInactive++;
+    }
+
+    state = texture(sampler, TexCoord + vec2(1, 0) / 512).r;
+    info.sum += state;
+
+    if(state == q)
+    {
+        info.numActive++;
+    }
+    else if(state > 0u)
+    {
+        info.numInactive++;
+    }
+
+    state = texture(sampler, TexCoord + vec2(1, 1) / 512).r;
+    info.sum += state;
+
+    if(state == q)
+    {
+        info.numActive++;
+    }
+    else if(state > 0u)
+    {
+        info.numInactive++;
     }
 }
 
 void main()
 {
-    int q  = 100;
-    int g  = 20;
-    int k1 = 2;
-    int k2 = 3;
+    uint q = 100u;
+    uint g = 20u;
+    uint k1 = 2u;
+    uint k2 = 3u;
 
-    int state = int(texture(sampler, TexCoord).r * 255);
+    uint state = texture(sampler, TexCoord).r;
 
-    Neighbors n;
-    getInfo(n, q);
+    LocalInfo info;
+    getLocalInfo(info, q);
 
-    if(state == 0)
+    if(state == 0u)
     {
-        float newState = (int(float(n.numActive) / k1) +
-            int(float(n.numNonActive) / k2)) / 255.0;
+        uint newState = uint(float(info.numActive) / k1) +
+            uint(float(info.numInactive) / k2);
 
-        color = vec4(newState, 0.0, 0.0, 1.0);
+        color = uvec4(newState, 0, 0, 1);
     }
     else if(state < q)
     {
-        float newState = (int(float(n.sum) / (n.numActive + n.numNonActive + 1)) + g) / 255.0;
+        uint newState = uint(float(info.sum) / (info.numActive + info.numInactive + 1u)) + g;
 
-        color = vec4(newState, 0.0, 0.0, 1.0);
+        color = uvec4(newState, 0, 0, 1);
     }
     else if(state == q)
     {
-        color = vec4(0.0, 0.0, 0.0, 1.0);
+        color = uvec4(0, 0, 0, 1);
     }
 }
