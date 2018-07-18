@@ -4,10 +4,12 @@ in  vec2 TexCoord;
 
 out vec4 color;
 
-uniform sampler2D sampler;
+uniform usampler2D sampler;
 
 void main()
 {
-    color = texture(sampler, TexCoord);
+    uint state = texture(sampler, TexCoord).r;
+
+    color = vec4(0.0, state / 255.0, 0.0, 1.0);
 }
 

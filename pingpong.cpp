@@ -68,11 +68,11 @@ void PingPong::createFrontAndBackTextures()
 
             if(r < 0.33)
             {
-                textureData[mWidth * row + col] = 0xFF0000C8;
+                textureData[mWidth * row + col] = 0xFF000064;
             }
             else if(r > 0.33 && r < 0.66)
             {
-                textureData[mWidth * row + col] = 0xFF000080;
+                textureData[mWidth * row + col] = 0xFF000001;
             }
             else
             {
@@ -84,7 +84,7 @@ void PingPong::createFrontAndBackTextures()
     glGenTextures(1, &mColorAttachments[0]);
     glBindTexture(GL_TEXTURE_2D, mColorAttachments[0]);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, GL_RGBA,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8UI, mWidth, mHeight, 0, GL_RGBA_INTEGER,
                  GL_UNSIGNED_BYTE, textureData);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -92,18 +92,22 @@ void PingPong::createFrontAndBackTextures()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
+    glGenerateMipmap(GL_TEXTURE_2D);
+
     glBindTexture(GL_TEXTURE_2D, 0);
 
     glGenTextures(1, &mColorAttachments[1]);
     glBindTexture(GL_TEXTURE_2D, mColorAttachments[1]);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, mWidth, mHeight, 0, GL_RGBA,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8UI, mWidth, mHeight, 0, GL_RGBA_INTEGER,
                  GL_UNSIGNED_BYTE, nullptr);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    glGenerateMipmap(GL_TEXTURE_2D);
 
     glBindTexture(GL_TEXTURE_2D, 0);
 
