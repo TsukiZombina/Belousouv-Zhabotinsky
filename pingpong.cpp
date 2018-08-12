@@ -16,7 +16,7 @@ PingPong::PingPong(GLuint width, GLuint height) : mWidth(width), mHeight(height)
     mShaderProgram = linkShaderProgram("vertex_shader.glsl",
                                        "test_shader.glsl");
 
-    srand(time(NULL));
+    srand(static_cast<unsigned int>(time(nullptr)));
 }
 
 PingPong::~PingPong()
@@ -40,7 +40,7 @@ void PingPong::update(GLuint vao)
     glBindTexture(GL_TEXTURE_2D, mBack);
 
     glBindVertexArray(vao);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (GLvoid*)0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, static_cast<void*>(nullptr));
     glBindVertexArray(0);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -60,23 +60,43 @@ void PingPong::createFrontAndBackTextures()
 {
     GLuint* textureData = new GLuint[mWidth * mHeight];
 
-    for(GLuint row = 0; row < mHeight; row++)
+    for(GLuint row = 0; row < mHeight; row ++)
     {
-        for(GLuint col = 0; col < mWidth; col++)
+        for(GLuint col = 0; col < mWidth; col += 2)
         {
-            GLfloat r = (GLfloat)rand() / RAND_MAX;
+            GLuint state = 0;
+            GLfloat r = static_cast<float>(rand()) / RAND_MAX;
 
-            if(r < 0.33)
+            if(r < 0.33f)
             {
-                textureData[mWidth * row + col] = 0xFF000064;
+                state = 0xFF000064;
             }
-            else if(r > 0.33 && r < 0.66)
+            else if(r >= 0.33f && r < 0.66f)
             {
-                textureData[mWidth * row + col] = 0xFF000001;
+                state = 0xFF000001;
             }
             else
             {
-                textureData[mWidth * row + col] = 0xFF000000;
+                state = 0xFF000000;
+            }
+
+            if(row % 2)
+            {
+                if(col == 0)
+                {
+                    textureData[mWidth * row] = state;
+                    textureData[mWidth * row + mWidth - 1] = state;
+                }
+                else if(col < mWidth - 1)
+                {
+                    textureData[mWidth * row + col - 1] = state;
+                    textureData[mWidth * row + col] = state;
+                }
+            }
+            else
+            {
+                textureData[mWidth * row + col] = state;
+                textureData[mWidth * row + col + 1] = state;
             }
         }
     }

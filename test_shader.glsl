@@ -1,9 +1,3 @@
-// Rules for Brian's brain
-// Each cell has three possible states: passive (0), active (1) and semi - active(2).
-// If a cell is active, it goes to semi-active state on the next step.
-// If a cell is semi-active, it becomes passive on the next step.
-// If a cell is passive, it becomes active if and only if it has exactly 2 active neighbors.
-
 #version 330 core
 
 in vec2 TexCoord;
@@ -25,6 +19,7 @@ void getLocalInfo(out LocalInfo info, uint q)
     info.numInactive = 0u;
     info.sum = 0u;
 
+    // Ok
     uint state = texture(sampler, TexCoord + vec2(-1, -1) / 512).r;
     info.sum += state;
 
@@ -37,7 +32,8 @@ void getLocalInfo(out LocalInfo info, uint q)
         info.numInactive++;
     }
 
-    state = texture(sampler, TexCoord + vec2(-1, 0) / 512).r;
+    // Ok
+    state = texture(sampler, TexCoord + vec2(-2, 0) / 512).r;
     info.sum += state;
 
     if(state == q)
@@ -49,6 +45,7 @@ void getLocalInfo(out LocalInfo info, uint q)
         info.numInactive++;
     }
 
+    // Ok
     state = texture(sampler, TexCoord + vec2(-1, 1) / 512).r;
     info.sum += state;
 
@@ -61,30 +58,7 @@ void getLocalInfo(out LocalInfo info, uint q)
         info.numInactive++;
     }
 
-    state = texture(sampler, TexCoord + vec2(0, -1) / 512).r;
-    info.sum += state;
-
-    if(state == q)
-    {
-        info.numActive++;
-    }
-    else if(state > 0u)
-    {
-        info.numInactive++;
-    }
-
-    state = texture(sampler, TexCoord + vec2(0, 1) / 512).r;
-    info.sum += state;
-
-    if(state == q)
-    {
-        info.numActive++;
-    }
-    else if(state > 0u)
-    {
-        info.numInactive++;
-    }
-
+    // Ok
     state = texture(sampler, TexCoord + vec2(1, -1) / 512).r;
     info.sum += state;
 
@@ -97,7 +71,8 @@ void getLocalInfo(out LocalInfo info, uint q)
         info.numInactive++;
     }
 
-    state = texture(sampler, TexCoord + vec2(1, 0) / 512).r;
+    // Ok
+    state = texture(sampler, TexCoord + vec2(2, 0) / 512).r;
     info.sum += state;
 
     if(state == q)
@@ -109,6 +84,7 @@ void getLocalInfo(out LocalInfo info, uint q)
         info.numInactive++;
     }
 
+    // Ok
     state = texture(sampler, TexCoord + vec2(1, 1) / 512).r;
     info.sum += state;
 
@@ -125,9 +101,9 @@ void getLocalInfo(out LocalInfo info, uint q)
 void main()
 {
     uint q = 100u;
-    uint g = 20u;
-    uint k1 = 2u;
-    uint k2 = 3u;
+    uint g = 30u;
+    uint k1 = 1u;
+    uint k2 = 2u;
 
     uint state = texture(sampler, TexCoord).r;
 
