@@ -60,7 +60,7 @@ void PingPong::createFrontAndBackTextures()
 {
     GLuint* textureData = new GLuint[mWidth * mHeight];
 
-    for(GLuint row = 0; row < mHeight; row++)
+    for(GLuint row = 0; row < mHeight; row += 2)
     {
         for(GLuint col = 0; col < mWidth; col++)
         {
@@ -69,14 +69,17 @@ void PingPong::createFrontAndBackTextures()
             if(r < 0.33)
             {
                 textureData[mWidth * row + col] = 0xFF000064;
+                textureData[mWidth * row + col + 1] = 0xFF000064;
             }
             else if(r > 0.33 && r < 0.66)
             {
                 textureData[mWidth * row + col] = 0xFF000001;
+                textureData[mWidth * row + col + 1] = 0xFF000001;
             }
             else
             {
                 textureData[mWidth * row + col] = 0xFF000000;
+                textureData[mWidth * row + col + 1] = 0xFF000000;
             }
         }
     }
