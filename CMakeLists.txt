@@ -23,3 +23,15 @@ if(UNIX)
     target_link_libraries(${PROJECT_NAME} GLEW)
     target_link_libraries(${PROJECT_NAME} glfw)
 endif(UNIX)
+
+if(WIN32)
+    include_directories(D:/Documents/C++/OpenGL/DependenciesMinGW/include/)
+
+    target_link_libraries(${PROJECT_NAME} opengl32)
+
+    find_library(GLEW_LIB libglew32.dll HINTS D:/Documents/C++/OpenGL/DependenciesMinGW/lib/)
+    target_link_libraries(${PROJECT_NAME} ${GLEW_LIB})
+
+    find_library(GLFW_LIB glfw3dll HINTS D:/Documents/C++/OpenGL/DependenciesMinGW/lib/)
+    target_link_libraries(${PROJECT_NAME} ${GLFW_LIB})
+endif(WIN32)
