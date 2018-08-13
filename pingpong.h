@@ -1,5 +1,5 @@
 #ifndef PINGPONG_H
-#define PINGPONG_H 
+#define PINGPONG_H
 
 #include <GL/glew.h>
 
@@ -22,4 +22,4 @@ private:
     GLuint mShaderProgram = {0};
 };
 
-#endif // PINGPONG_H 
+#endif // PINGPONG_H
