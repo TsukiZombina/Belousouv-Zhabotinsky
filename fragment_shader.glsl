@@ -10,6 +10,6 @@ void main()
 {
     uint state = texture(sampler, TexCoord).r;
 
-    color = vec4(0.0, state / 255.0, 0.0, 1.0);
+    color = vec4(state/ 255.0, state / 255.0, 0.0, 1.0);
 }
 
